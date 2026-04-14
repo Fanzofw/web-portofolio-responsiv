@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Portofolio Fahri</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        poppins: ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        'brand-red': '#cc0000',
+                    },
+                    backgroundImage: {
+                        'hero-gradient': 'linear-gradient(135deg, #121212, #521e1e, #7e1b0a)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html { scroll-behavior: smooth; }
+        body {
+            background: linear-gradient(135deg, #121212, #521e1e, #7e1b0a);
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+        }
+
+        /* Navbar glass */
+        .navbar-glass {
+            background: rgba(34, 33, 33, 0.7);
+            backdrop-filter: blur(50px);
+        }
+
+        /* Info card */
+        .info-card-bg {
+            background: rgba(255, 0, 0, 0.08);
+            border: 1px solid rgba(255, 0, 0, 0.35);
+            backdrop-filter: blur(12px);
+        }
+
+        /* Skill tab container */
+        .tab-bg {
+            background: rgba(255, 0, 0, 0.08);
+            border: 1px solid rgba(255, 0, 0, 0.2);
+        }
+
+        /* Tab nav */
+        .tab-nav-bg {
+            background: rgba(255, 0, 0, 0.1);
+        }
+
+        /* Active tab */
+        .tab-active {
+            background: rgba(255, 0, 0, 0.5);
+        }
+
+        /* Project card */
+        .project-card {
+            background: rgba(255, 0, 0, 0.08);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(255, 0, 0, 0.3);
+        }
+        .project-card img {
+            transition: transform 0.4s;
+        }
+        .project-card:hover img {
+            transform: scale(1.1);
+        }
+
+        /* Profile photo hover */
+        .foto-profil img {
+            transition: transform 0.4s ease;
+        }
+        .foto-profil:hover img {
+            transform: scale(1.1);
+        }
+
+        /* Skill badge */
+        .skill-badge {
+            transition: background 0.3s, color 0.3s, box-shadow 0.3s;
+        }
+        .skill-badge:hover {
+            background: red;
+            color: white;
+            box-shadow: 0 0 10px red;
+        }
+
+        /* Contact section */
+        .contact-section {
+            background: #0f0f0f;
+        }
+        .contact-form-bg {
+            background: rgba(255, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        .contact-input {
+            background: #1a1a1a;
+            color: white;
+            border: none;
+            outline: none;
+            border-radius: 10px;
+            padding: 10px;
+            width: 100%;
+        }
+        .contact-input::placeholder { color: #777; }
+
+        /* Social links */
+        .social-link {
+            background: #1a1a1a;
+            transition: background 0.3s;
+        }
+        .social-link:hover { background: red; }
+
+        /* Separator */
+        .separator {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Video box */
+        .video-box {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(0,0,0,0.5);
+        }
+
+        /* Tab content hidden by default */
+        .tab-content-panel {
+            display: none;
+        }
+        .tab-content-panel.active {
+            display: block;
+        }
+
+        /* Gradient overlay on photo */
+        .photo-gradient {
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+        }
+    </style>
+</head>
+<body class="text-white">
+
+    <!-- ===== NAVBAR ===== -->
+    <header class="navbar-glass sticky top-0 z-50 px-6 py-4">
+        <div class="flex items-center">
+            <div class="text-xl font-bold text-blue-50">FanzoDevOfficial</div>
+
+            <!-- Desktop Nav -->
+            <nav class="ml-auto hidden md:flex gap-5">
+                <a href="#" class="text-white hover:text-cyan-400 transition-colors">About</a>
+                <a href="#skill" class="text-white hover:text-cyan-400 transition-colors">Skill</a>
+                <a href="#contact" class="text-white hover:text-cyan-400 transition-colors">Contact</a>
+            </nav>
+
+            <!-- Hamburger Button -->
+            <button id="hamburger" onclick="toggleMenu()" class="ml-auto md:hidden flex flex-col justify-center items-center gap-1.5 w-9 h-9 focus:outline-none">
+                <span id="bar1" class="block w-6 h-0.5 bg-white transition-all duration-300"></span>
+                <span id="bar2" class="block w-6 h-0.5 bg-white transition-all duration-300"></span>
+                <span id="bar3" class="block w-6 h-0.5 bg-white transition-all duration-300"></span>
+            </button>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="md:hidden overflow-hidden max-h-0 transition-all duration-300 ease-in-out">
+            <nav class="flex flex-col gap-1 pt-3 pb-1">
+                <a href="#" onclick="closeMenu()" class="text-white hover:text-cyan-400 hover:bg-white/5 transition-colors px-3 py-2.5 rounded-lg">About</a>
+                <a href="#skill" onclick="closeMenu()" class="text-white hover:text-cyan-400 hover:bg-white/5 transition-colors px-3 py-2.5 rounded-lg">Skill</a>
+                <a href="#contact" onclick="closeMenu()" class="text-white hover:text-cyan-400 hover:bg-white/5 transition-colors px-3 py-2.5 rounded-lg">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ===== HERO ===== -->
+    <section class="flex flex-col lg:flex-row items-center gap-8 px-5 py-14 md:px-10 lg:px-14 max-w-7xl mx-auto">
+
+        <!-- Photo -->
+        <div class="foto-profil w-[220px] h-[300px] sm:w-[250px] sm:h-[340px] relative flex-shrink-0 rounded-2xl overflow-hidden order-1">
+            <img src="profil.png" alt="Foto Fahri" class="w-full h-full object-cover rounded-2xl">
+            <div class="photo-gradient absolute bottom-0 left-0 w-full h-1/2 rounded-2xl"></div>
+        </div>
+
+        <!-- Text -->
+        <div class="order-2 flex-1 text-center lg:text-left">
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight mb-4">Hai, Saya Fahri</h1>
+            <p class="text-gray-300 text-base sm:text-lg leading-relaxed max-w-lg mx-auto lg:mx-0">
+                Halo! nama saya Fahri Wear, Saya adalah mahasiswa ilmu komputer asal Universitas Pattimura, dan berusia 20 tahun dengan ketertarikan 
+                mendalam pada Video Game, Video Editing, Dan AI. Saya suka membangun kreativitas saya lewat Simulasi Digital, seperti Game development, Content Creator,
+                Video Editing, dan web developer, yang dimana akan menjadi bagian dari portofolio saya
+            </p>
+            <!-- Skills -->
+            <div class="mt-4 flex flex-wrap gap-2 justify-center lg:justify-start">
+                <span class="skill-badge bg-blue-50 text-black text-sm px-4 py-1.5 rounded-full cursor-default">HTML</span>
+                <span class="skill-badge bg-blue-50 text-black text-sm px-4 py-1.5 rounded-full cursor-default">PHP</span>
+                <span class="skill-badge bg-blue-50 text-black text-sm px-4 py-1.5 rounded-full cursor-default">CSS</span>
+                <span class="skill-badge bg-blue-50 text-black text-sm px-4 py-1.5 rounded-full cursor-default">Unity (C#)</span>
+                <span class="skill-badge bg-blue-50 text-black text-sm px-4 py-1.5 rounded-full cursor-default">Game Design</span>
+                <span class="skill-badge bg-blue-50 text-black text-sm px-4 py-1.5 rounded-full cursor-default">Capcut</span>
+                <span class="skill-badge bg-blue-50 text-black text-sm px-4 py-1.5 rounded-full cursor-default">Problem Solving</span>
+            </div>
+        </div>
+
+        <!-- Info Card -->
+        <div class="info-card-bg order-3 rounded-2xl p-7 w-full max-w-xs lg:w-72 flex-shrink-0">
+            <p class="font-bold text-xl text-white mb-2">Informasi Pribadi</p>
+            <div class="separator mb-3"></div>
+
+            <div class="mb-3">
+                <p class="text-gray-400 text-sm">Nama Panggilan</p>
+                <p class="font-semibold text-lg text-white">Fanzo</p>
+            </div>
+            <div class="separator mb-3"></div>
+
+            <div class="mb-3">
+                <p class="text-gray-400 text-sm">Lokasi</p>
+                <p class="font-semibold text-lg text-white">Ambon, Maluku</p>
+            </div>
+            <div class="separator mb-3"></div>
+
+            <div class="mb-3">
+                <p class="text-gray-400 text-sm">Umur</p>
+                <p class="font-semibold text-lg text-white">20</p>
+            </div>
+            <div class="separator mb-3"></div>
+
+            <div>
+                <p class="text-gray-400 text-sm">Bahasa</p>
+                <p class="font-semibold text-lg text-white">Indonesia</p>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- ===== SKILL SECTION ===== -->
+    <section id="skill" class="px-5 md:px-10 lg:px-14 pb-16 max-w-7xl mx-auto">
+        <p class="text-center text-sm text-gray-400 mb-2">Skill</p>
+        <div class="separator mb-5"></div>
+
+        <!-- Tab Wrapper -->
+        <div class="tab-bg rounded-2xl overflow-hidden">
+
+            <!-- Tab Buttons -->
+            <div class="tab-nav-bg flex rounded-t-2xl">
+                <button onclick="switchTab('web')" id="btn-web" class="tab-btn tab-active flex-1 py-3 text-sm text-white transition-colors rounded-tl-2xl">Web</button>
+                <button onclick="switchTab('game')" id="btn-game" class="tab-btn flex-1 py-3 text-sm text-white transition-colors hover:bg-red-900/40">Game</button>
+                <button onclick="switchTab('editing')" id="btn-editing" class="tab-btn flex-1 py-3 text-sm text-white transition-colors hover:bg-red-900/40">Editing</button>
+                <button onclick="switchTab('content')" id="btn-content" class="tab-btn flex-1 py-3 text-sm text-white transition-colors rounded-tr-2xl hover:bg-red-900/40">Content</button>
+            </div>
+
+            <!-- Tab Content: Web -->
+            <div id="tab-web" class="tab-content-panel active p-5 md:p-7">
+                <p class="text-sm text-gray-300 leading-relaxed mb-6">
+                    Web developer mandiri yang antusias dalam mengeksplorasi teknologi web fundamental (HTML, CSS, PHP). 
+                    Memiliki pendekatan pragmatis dalam menyelesaikan masalah kode dengan memanfaatkan AI-assisted
+                    development untuk mempercepat pembuatan prototipe. Memiliki pengalaman dasar dalam ekosistem CMS WordPress dan terus
+                    aktif mengembangkan keterampilan melalui proyek-proyek independen dengan pengalaman sebagai web developer sekitar setengah tahun.
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                    <a href="https://fanzofw.github.io/fanzo-official/" target="_blank" class="project-card rounded-2xl overflow-hidden block text-white no-underline">
+                        <div class="h-44 overflow-hidden"><img src="fanzoofficial.png" alt="project" class="w-full h-full object-cover"></div>
+                        <div class="p-4">
+                            <h3 class="text-base font-semibold mb-2">Website Alternatif Download</h3>
+                            <p class="text-xs text-gray-400 leading-relaxed">Website ini berisi link alternatif untuk membantu pengguna mendownload addon yang dulu saya buat, dibuat menggunakan HTML dan CSS.</p>
+                        </div>
+                    </a>
+                    <a href="https://fanzofw.github.io/JamDigital/" target="_blank" class="project-card rounded-2xl overflow-hidden block text-white no-underline">
+                        <div class="h-44 overflow-hidden"><img src="digital.png" alt="project" class="w-full h-full object-cover"></div>
+                        <div class="p-4">
+                            <h3 class="text-base font-semibold mb-2">Website Jam Digital Belajar</h3>
+                            <p class="text-xs text-gray-400 leading-relaxed">Website jam digital bertema lofi dengan fitur alarm dan backsound lofi. Responsif di semua device.</p>
+                        </div>
+                    </a>
+                    <a href="" target="_blank" class="project-card rounded-2xl overflow-hidden block text-white no-underline">
+                        <div class="h-44 overflow-hidden"><img src="gamee.png" alt="project" class="w-full h-full object-cover"></div>
+                        <div class="p-4">
+                            <h3 class="text-base font-semibold mb-2">Website Jual Game Online</h3>
+                            <p class="text-xs text-gray-400 leading-relaxed">Website kumpulan game yang bisa dibeli, dibuat dengan WordPress dan responsif di semua device.</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Tab Content: Game -->
+            <div id="tab-game" class="tab-content-panel p-5 md:p-7">
+                <p class="text-sm text-gray-300 leading-relaxed mb-6">
+                    Indie Game Developer yang berfokus pada pembuatan interaksi dan mekanik permainan menggunakan Unity dan C# dengan pengalaman sekitar 3 bulan. 
+                    Memiliki pengalaman langsung dalam seluruh siklus pengembangan game secara mandiri—mulai dari perancangan prototipe, implementasi logika gameplay, 
+                    manajemen aset visual, hingga publikasi di platform itch.io. Dulunya juga seorang Indie developer Addon Minecraft mulai dari perencanaan, 
+                    pembuatan asset hingga mempublikasikannya di Linkvertise, Mcpdl, dan Modbay.
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                    <a href="https://fanzodev.itch.io/" target="_blank" class="project-card rounded-2xl overflow-hidden block text-white no-underline">
+                        <div class="h-44 overflow-hidden"><img src="itchio.png" alt="itch.io" class="w-full h-full object-cover"></div>
+                        <div class="p-4"><h3 class="text-base font-semibold mb-2">itch.io</h3><p class="text-xs text-gray-400">Platform publish game indie. Klik untuk melihat karya saya.</p></div>
+                    </a>
+                    <a href="https://mcpedl.com/user/Fanzofw/" target="_blank" class="project-card rounded-2xl overflow-hidden block text-white no-underline">
+                        <div class="h-44 overflow-hidden"><img src="mcpdl.jpg" alt="Mcpdl" class="w-full h-full object-cover"></div>
+                        <div class="p-4"><h3 class="text-base font-semibold mb-2">Mcpdl</h3><p class="text-xs text-gray-400">Website kumpulan addon Minecraft. Klik untuk melihat karya saya.</p></div>
+                    </a>
+                    <a href="https://linkvertise.com/profile/674645" target="_blank" class="project-card rounded-2xl overflow-hidden block text-white no-underline">
+                        <div class="h-44 overflow-hidden"><img src="linkvertise.jpg" alt="Linkvertise" class="w-full h-full object-cover"></div>
+                        <div class="p-4"><h3 class="text-base font-semibold mb-2">Linkvertise</h3><p class="text-xs text-gray-400">Platform berbagai mod game dengan sistem shortlink. Klik untuk melihat.</p></div>
+                    </a>
+                    <a href="https://modbay.org/user/fanzofw/" target="_blank" class="project-card rounded-2xl overflow-hidden block text-white no-underline">
+                        <div class="h-44 overflow-hidden"><img src="modbay.jpg" alt="Modbay" class="w-full h-full object-cover"></div>
+                        <div class="p-4"><h3 class="text-base font-semibold mb-2">Modbay</h3><p class="text-xs text-gray-400">Website addon Minecraft seperti MCPDL. Klik untuk melihat karya saya.</p></div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Tab Content: Editing -->
+            <div id="tab-editing" class="tab-content-panel p-5 md:p-7">
+                <p class="text-sm text-gray-300 leading-relaxed mb-6 text-center">
+                    Video Editor dan Content Creator yang kreatif dengan keahlian dalam menyusun penceritaan visual yang menarik. 
+                    Berpengalaman menggunakan CapCut untuk memproduksi, mengedit, dan mengoptimalkan konten video di berbagai platform media sosial 
+                    dengan pengalaman sekitar 5 tahun. Memiliki insting yang kuat terhadap tren audio, transisi dinamis, dan ritme visual 
+                    untuk mempertahankan retensi penonton. Di bawah ini adalah kumpulan video yang sudah dirangkum.
+                </p>
+                <div class="flex justify-center">
+                    <div class="video-box w-full max-w-md aspect-video">
+                        <video controls loop class="w-full h-full object-cover block">
+                            <source src="video.mp4" type="video/mp4">
+                            Browser tidak mendukung video.
+                        </video>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Content: Content -->
+            <div id="tab-content" class="tab-content-panel p-5 md:p-7">
+                <p class="text-sm text-gray-300 leading-relaxed mb-6">
+                    Konten Kreator dengan 5 tahun pengalaman dalam memproduksi dan mengelola konten digital di YouTube dan TikTok. 
+                    Memiliki rekam jejak yang terbukti dalam membangun audiens organik hingga puluhan ribu penonton per video. Ahli dalam 
+                    merancang strategi pemasaran konten untuk mempromosikan proyek game dan Addon mandiri, serta mahir menyusun penceritaan 
+                    visual yang engaging untuk berbagai ceruk audiens, mulai dari komunitas gaming hingga penggemar film.
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                    <a href="https://www.tiktok.com/@cartoon.min" target="_blank" class="project-card rounded-2xl overflow-hidden block text-white no-underline">
+                        <div class="h-44 overflow-hidden"><img src="tiktok.png" alt="TikTok" class="w-full h-full object-cover"></div>
+                        <div class="p-4"><h3 class="text-base font-semibold mb-2">Cartoon Min</h3><p class="text-xs text-gray-400">Konten bahas film animasi. Klik untuk melihat.</p></div>
+                    </a>
+                    <a href="https://www.tiktok.com/@oboi6562" target="_blank" class="project-card rounded-2xl overflow-hidden block text-white no-underline">
+                        <div class="h-44 overflow-hidden"><img src="tiktok.png" alt="TikTok" class="w-full h-full object-cover"></div>
+                        <div class="p-4"><h3 class="text-base font-semibold mb-2">Oboi</h3><p class="text-xs text-gray-400">Konten bahas film animasi. Klik untuk melihat.</p></div>
+                    </a>
+                    <a href="https://www.bilibili.tv/id/space/1457745418" target="_blank" class="project-card rounded-2xl overflow-hidden block text-white no-underline">
+                        <div class="h-44 overflow-hidden"><img src="bstasion.jpg" alt="Bilibili" class="w-full h-full object-cover"></div>
+                        <div class="p-4"><h3 class="text-base font-semibold mb-2">mubbleee</h3><p class="text-xs text-gray-400">Konten seputar fakta serial anime. Klik untuk melihat.</p></div>
+                    </a>
+                    <a href="https://youtube.com/@fanzofw3540?si=jl_SZGgz6sk71H5G" target="_blank" class="project-card rounded-2xl overflow-hidden block text-white no-underline">
+                        <div class="h-44 overflow-hidden"><img src="Youtube_logo.png" alt="YouTube" class="w-full h-full object-cover"></div>
+                        <div class="p-4"><h3 class="text-base font-semibold mb-2">Fanzo Fw</h3><p class="text-xs text-gray-400">Promosi addon Minecraft yang telah dibuat. Klik untuk melihat.</p></div>
+                    </a>
+                    <a href="https://youtube.com/@raftco1553?si=zJClAe-dXbGt0MBR" target="_blank" class="project-card rounded-2xl overflow-hidden block text-white no-underline">
+                        <div class="h-44 overflow-hidden"><img src="Youtube_logo.png" alt="YouTube" class="w-full h-full object-cover"></div>
+                        <div class="p-4"><h3 class="text-base font-semibold mb-2">Fanzo 0.2</h3><p class="text-xs text-gray-400">Promosi addon Minecraft yang telah dibuat. Klik untuk melihat.</p></div>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ===== CONTACT SECTION ===== -->
+    <section id="contact" class="contact-section py-20 px-5 text-center">
+        <h2 class="text-3xl font-bold mb-3">Contact Me</h2>
+        <p class="text-gray-400 mb-10 text-sm">Silakan hubungi saya untuk kerja sama atau sekadar berbincang</p>
+
+        <div class="flex flex-col sm:flex-row justify-center gap-8 flex-wrap max-w-3xl mx-auto">
+
+            <!-- Form -->
+            <div class="contact-form-bg rounded-2xl p-6 flex flex-col gap-4 w-full sm:w-72">
+                <input type="text" class="contact-input" placeholder="Nama Anda">
+                <input type="email" class="contact-input" placeholder="Email Anda">
+                <textarea class="contact-input" placeholder="Pesan Anda..." rows="5"></textarea>
+                <button class="bg-red-600 hover:bg-red-400 transition-colors text-white py-3 rounded-xl font-medium">Kirim Pesan</button>
+            </div>
+
+            <!-- Info -->
+            <div class="contact-form-bg rounded-2xl p-6 w-full sm:w-72 text-left">
+                <h3 class="text-lg font-semibold mb-4">Informasi Kontak</h3>
+                <p class="text-sm text-gray-300 mb-1"><strong>Email:</strong> fahriwear11@gmail.com</p>
+                <p class="text-sm text-gray-300"><strong>Lokasi:</strong> Ambon, Indonesia</p>
+
+                <div class="flex flex-col gap-3 mt-5">
+                    <a href="#" class="social-link text-white text-sm px-4 py-3 rounded-xl transition-colors">Instagram</a>
+                    <a href="#" class="social-link text-white text-sm px-4 py-3 rounded-xl transition-colors">YouTube</a>
+                    <a href="#" class="social-link text-white text-sm px-4 py-3 rounded-xl transition-colors">TikTok</a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const bar1 = document.getElementById('bar1');
+            const bar2 = document.getElementById('bar2');
+            const bar3 = document.getElementById('bar3');
+            const isOpen = menu.style.maxHeight && menu.style.maxHeight !== '0px';
+            if (isOpen) {
+                menu.style.maxHeight = '0px';
+                bar1.style.transform = '';
+                bar2.style.opacity = '1';
+                bar3.style.transform = '';
+            } else {
+                menu.style.maxHeight = menu.scrollHeight + 'px';
+                bar1.style.transform = 'translateY(8px) rotate(45deg)';
+                bar2.style.opacity = '0';
+                bar3.style.transform = 'translateY(-8px) rotate(-45deg)';
+            }
+        }
+
+        function closeMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.style.maxHeight = '0px';
+            document.getElementById('bar1').style.transform = '';
+            document.getElementById('bar2').style.opacity = '1';
+            document.getElementById('bar3').style.transform = '';
+        }
+
+        function switchTab(name) {
+            document.querySelectorAll('.tab-content-panel').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => {
+                el.classList.remove('tab-active');
+                el.classList.add('hover:bg-red-900/40');
+            });
+            document.getElementById('tab-' + name).classList.add('active');
+            const activeBtn = document.getElementById('btn-' + name);
+            activeBtn.classList.add('tab-active');
+            activeBtn.classList.remove('hover:bg-red-900/40');
+        }
+    </script>
+
+</body>
+</html>
